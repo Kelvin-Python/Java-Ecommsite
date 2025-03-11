@@ -1,7 +1,9 @@
 package dev.kelvin.ecommercesite.controller;
 
 import dev.kelvin.ecommercesite.dto.ChangePasswordRequest;
+import dev.kelvin.ecommercesite.dto.EmailConfirmationRequest;
 import dev.kelvin.ecommercesite.dto.LogInRequest;
+import dev.kelvin.ecommercesite.exception.ResourceNotFoundException;
 import dev.kelvin.ecommercesite.model.User;
 import dev.kelvin.ecommercesite.service.JwtService;
 import dev.kelvin.ecommercesite.service.UserService;
@@ -9,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -49,5 +52,17 @@ public class AuthController {
         userService.changePassword(email,request);
         return ResponseEntity.ok().body("Password changed");
 
+    }
+
+    @PostMapping("/confirm-email")
+    public ResponseEntity<?> confirmEmail(@RequestBody EmailConfirmationRequest request){
+        try {
+            userService.confirmEmail(request.getEmail(), request.getConfirmationCode());
+            return ResponseEntity.ok().body("Email confirmed");
+        }catch (BadCredentialsException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }catch (ResourceNotFoundException e){
+            return ResponseEntity.notFound().build();
+        }
     }
 }

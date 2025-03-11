@@ -1,7 +1,7 @@
 package dev.kelvin.ecommercesite.service;
 
 import dev.kelvin.ecommercesite.dto.CartDTO;
-import dev.kelvin.ecommercesite.exception.InsufficientResourceException;
+import dev.kelvin.ecommercesite.exception.InsufficientStockException;
 import dev.kelvin.ecommercesite.exception.ResourceNotFoundException;
 import dev.kelvin.ecommercesite.mapper.CartMapper;
 import dev.kelvin.ecommercesite.model.Cart;
@@ -14,7 +14,6 @@ import dev.kelvin.ecommercesite.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.naming.InsufficientResourcesException;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -34,7 +33,7 @@ public class CartService {
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
         if(product.getQuantity() < quantity) {
-            throw new InsufficientResourceException("Not enough available");
+            throw new InsufficientStockException("Not enough available");
         }
 
         Cart cart = cartRepository.findByUserId(userId)
