@@ -20,7 +20,7 @@ public class UserService {
             throw new IllegalArgumentException("Email already exists");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(User.Role.ROLE_USER);
+        user.setRole(User.Role.ADMIN);
         return userRepository.save(user);
     }
 

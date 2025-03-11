@@ -3,22 +3,23 @@ package dev.kelvin.ecommercesite.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Data
-public class ProductDTO {
+@AllArgsConstructor
+public class ProductListDTO {
     private Long id;
-    @NotBlank(message = "Product name is required")
+    @NotBlank
     private String name;
-    @NotBlank(message = "Product description is required")
+    @NotBlank
     private String description;
-    @Positive(message = "Cannot be negative")
+    @Positive
     private BigDecimal price;
-    @PositiveOrZero(message = "Cannot be negative")
+    @PositiveOrZero(message = "Quantity must be positive or zero")
     private Integer quantity;
-    private String image; //add image
-    private List<CommentDTO> comments;
+    private String image;
+
 }
